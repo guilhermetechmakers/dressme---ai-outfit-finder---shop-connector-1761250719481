@@ -9,12 +9,16 @@ import type {
   PasswordResetRequest,
   PasswordResetConfirm,
   EmailVerification,
+  EmailVerificationStatus,
+  ResendVerificationRequest,
+  VerifyEmailRequest,
   SocialAuthProvider
 } from '@/types';
 
 // Query keys
 export const authKeys = {
   user: ['auth', 'user'] as const,
+  verificationStatus: ['auth', 'verification-status'] as const,
 };
 
 // Get current user
@@ -122,12 +126,29 @@ export const usePasswordResetConfirm = () => {
   });
 };
 
+// Get email verification status
+export const useEmailVerificationStatus = (email?: string) => {
+  return useQuery({
+    queryKey: [...authKeys.verificationStatus, email],
+    queryFn: () => api.get<EmailVerificationStatus>(`/auth/verification-status${email ? `?email=${encodeURIComponent(email)}` : ''}`),
+    enabled: !!email,
+    retry: false,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+};
+
 // Email verification mutation
 export const useEmailVerification = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (data: EmailVerification) => 
-      api.post('/auth/verify-email', data),
-    onSuccess: () => {
+    mutationFn: (data: VerifyEmailRequest) => 
+      api.post<{ user: User; message: string }>('/auth/verify-email', data),
+    onSuccess: (data) => {
+      // Update user in cache
+      queryClient.setQueryData(authKeys.user, data.user);
+      // Invalidate verification status
+      queryClient.invalidateQueries({ queryKey: authKeys.verificationStatus });
       toast.success('Email verified successfully!');
     },
     onError: (error: any) => {
@@ -138,9 +159,14 @@ export const useEmailVerification = () => {
 
 // Resend verification email mutation
 export const useResendVerification = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: () => api.post('/auth/resend-verification'),
-    onSuccess: () => {
+    mutationFn: (data: ResendVerificationRequest) => 
+      api.post<{ message: string; cooldown?: number }>('/auth/resend-verification', data),
+    onSuccess: (data) => {
+      // Invalidate verification status to update cooldown
+      queryClient.invalidateQueries({ queryKey: authKeys.verificationStatus });
       toast.success('Verification email sent! Check your inbox.');
     },
     onError: (error: any) => {

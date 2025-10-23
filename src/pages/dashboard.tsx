@@ -3,12 +3,15 @@ import { Camera, Heart, History, Sparkles } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { AnimatedCard } from "@/components/ui/animated-card";
 import { ProductCard } from "@/components/features/product-card";
+import { EmailVerificationBanner } from "@/components/auth/AuthForm";
 import { useAnalyses } from "@/hooks/useAnalysis";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function DashboardPage() {
   const navigate = useNavigate();
   const { data: analyses, isLoading } = useAnalyses();
+  const [dismissedBanner, setDismissedBanner] = useState(false);
 
   const recentAnalyses = analyses?.slice(0, 3) || [];
   const savedLooks = []; // TODO: Implement saved looks
@@ -17,6 +20,18 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
+        {/* Email Verification Banner */}
+        {!dismissedBanner && (
+          <motion.div 
+            className="mb-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <EmailVerificationBanner onDismiss={() => setDismissedBanner(true)} />
+          </motion.div>
+        )}
+
         {/* Welcome Section */}
         <motion.div 
           className="mb-8"

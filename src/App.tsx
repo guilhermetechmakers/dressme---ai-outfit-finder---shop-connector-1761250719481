@@ -17,6 +17,7 @@ import { SignupPage } from "@/pages/auth/signup";
 import { ForgotPasswordPage } from "@/pages/auth/forgot-password";
 import { ResetPasswordPage } from "@/pages/auth/reset-password";
 import { EmailVerificationPage } from "@/pages/auth/email-verification";
+import { VerificationSuccessPage } from "@/pages/auth/verification-success";
 import { AuthCallbackPage } from "@/pages/auth/callback";
 import { OnboardingPage } from "@/pages/onboarding";
 import { NotFoundPage } from "@/pages/not-found";
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="/email-verification" element={<EmailVerificationPage />} />
+                <Route path="/verification-success" element={<VerificationSuccessPage />} />
                 <Route path="/auth/callback/:provider" element={<AuthCallbackPage />} />
                 
                 {/* Onboarding Route */}

@@ -84,6 +84,24 @@ export const emailVerificationSchema = z.object({
   token: z.string().min(1, 'Verification token is required'),
 });
 
+// Resend verification schema
+export const resendVerificationSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Please enter a valid email address')
+    .regex(emailRegex, 'Please enter a valid email address'),
+});
+
+// Verify email with token schema
+export const verifyEmailSchema = z.object({
+  token: z.string().min(1, 'Verification token is required'),
+  email: z
+    .string()
+    .email('Please enter a valid email address')
+    .optional(),
+});
+
 // Social auth schema
 export const socialAuthSchema = z.object({
   provider: z.enum(['google', 'apple', 'facebook'], {
@@ -181,6 +199,8 @@ export type SignUpFormData = z.infer<typeof signUpSchema>;
 export type PasswordResetRequestFormData = z.infer<typeof passwordResetRequestSchema>;
 export type PasswordResetConfirmFormData = z.infer<typeof passwordResetConfirmSchema>;
 export type EmailVerificationFormData = z.infer<typeof emailVerificationSchema>;
+export type ResendVerificationFormData = z.infer<typeof resendVerificationSchema>;
+export type VerifyEmailFormData = z.infer<typeof verifyEmailSchema>;
 export type SocialAuthFormData = z.infer<typeof socialAuthSchema>;
 export type StoreSelectionFormData = z.infer<typeof storeSelectionSchema>;
 export type StylePreferencesFormData = z.infer<typeof stylePreferencesSchema>;

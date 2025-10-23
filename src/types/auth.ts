@@ -34,6 +34,23 @@ export interface EmailVerification {
   token: string;
 }
 
+export interface EmailVerificationStatus {
+  isVerified: boolean;
+  email: string;
+  verificationSentAt?: string;
+  canResend: boolean;
+  resendCooldown?: number;
+}
+
+export interface ResendVerificationRequest {
+  email: string;
+}
+
+export interface VerifyEmailRequest {
+  token: string;
+  email?: string;
+}
+
 export interface SocialAuthProvider {
   provider: 'google' | 'apple' | 'facebook';
   token: string;
