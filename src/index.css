@@ -1,68 +1,224 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* Import Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
+/* DressMe Design System with CSS Custom Properties */
+@layer base {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    /* DressMe Color Palette - RGB format for consistency */
+    --background: 255 255 255; /* #FFFFFF - pure white */
+    --foreground: 0 0 0; /* #000000 - deep black */
+    
+    --primary: 0 0 0; /* #000000 - primary text and key actions */
+    --primary-foreground: 255 255 255; /* #FFFFFF - white text on black */
+    
+    --secondary: 244 244 244; /* #F4F4F4 - soft light gray */
+    --secondary-foreground: 0 0 0; /* #000000 - black text on light gray */
+    
+    --card: 255 255 255; /* #FFFFFF - card backgrounds */
+    --card-foreground: 0 0 0; /* #000000 - card text */
+    
+    --border: 229 229 229; /* #E5E5E5 - borders/dividers */
+    --input: 233 233 233; /* #E9E9E9 - input fields */
+    --ring: 0 0 0; /* #000000 - focus ring */
+    
+    --muted: 244 244 244; /* #F4F4F4 - muted backgrounds */
+    --muted-foreground: 110 110 110; /* #6E6E6E - secondary text and icons */
+    
+    --accent: 255 87 87; /* #FF5757 - vivid red for notifications and actions */
+    --accent-foreground: 255 255 255; /* #FFFFFF - white text on red */
+    
+    --destructive: 239 68 68; /* #EF4444 - destructive actions */
+    --destructive-foreground: 255 255 255; /* #FFFFFF - white text on red */
+    
+    --success: 34 197 94; /* #22C55E - success states */
+    --success-foreground: 255 255 255; /* #FFFFFF - white text on green */
+    
+    --warning: 245 158 11; /* #F59E0B - warning states */
+    --warning-foreground: 0 0 0; /* #000000 - black text on yellow */
+    
+    /* Design system variables */
+    --radius: 0.75rem; /* 12px - card border radius */
   }
-  a:hover {
-    color: #747bff;
+  
+  .dark {
+    /* Dark mode colors if needed in future */
+    --background: 0 0 0;
+    --foreground: 255 255 255;
+    --card: 0 0 0;
+    --card-foreground: 255 255 255;
+    --border: 38 38 38;
+    --input: 38 38 38;
+    --primary: 255 255 255;
+    --primary-foreground: 0 0 0;
+    --secondary: 38 38 38;
+    --secondary-foreground: 255 255 255;
+    --muted: 38 38 38;
+    --muted-foreground: 161 161 170;
+    --accent: 255 87 87;
+    --accent-foreground: 255 255 255;
   }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Typography hierarchy based on Design Reference */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-foreground;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+  
+  h5 {
+    @apply text-lg md:text-xl lg:text-2xl;
+  }
+  
+  h6 {
+    @apply text-base md:text-lg lg:text-xl;
+  }
+  
+  p {
+    @apply text-base text-foreground;
+    line-height: 1.6;
+  }
+  
+  /* Button base styles */
   button {
-    background-color: #f9f9f9;
+    @apply font-medium transition-all duration-200;
+  }
+  
+  /* Focus visible for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2;
+  }
+  
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-foreground;
+  }
+}
+
+@layer components {
+  /* DressMe specific component styles */
+  .dressme-card {
+    @apply bg-card text-card-foreground rounded-xl shadow-dressme-card border border-border;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .dressme-card:hover {
+    @apply shadow-dressme-card-hover -translate-y-1;
+  }
+  
+  .dressme-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-6 py-3 font-medium transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+  
+  .dressme-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg px-6 py-3 font-medium transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+  
+  .dressme-button-outline {
+    @apply border border-border bg-transparent hover:bg-muted rounded-lg px-6 py-3 font-medium transition-all duration-200 hover:scale-105 active:scale-95;
+  }
+  
+  .dressme-input {
+    @apply bg-input border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all duration-200;
+  }
+  
+  .dressme-text-gradient {
+    @apply bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent;
+  }
+  
+  .dressme-shimmer {
+    @apply relative overflow-hidden;
+  }
+  
+  .dressme-shimmer::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent;
+    animation: shimmer 2s infinite;
+  }
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Custom animations */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+/* Loading states */
+.loading-skeleton {
+  @apply animate-pulse bg-muted rounded;
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 640px) {
+  .mobile-padding {
+    @apply px-4;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
   }
 }
