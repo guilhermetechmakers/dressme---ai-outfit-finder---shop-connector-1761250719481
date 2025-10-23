@@ -8,7 +8,8 @@ import type {
   User, 
   PasswordResetRequest,
   PasswordResetConfirm,
-  EmailVerification 
+  EmailVerification,
+  SocialAuthProvider
 } from '@/types';
 
 // Query keys
@@ -32,7 +33,7 @@ export const useSignIn = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (credentials: SignInInput) => 
+    mutationFn: (credentials: SignInInput | SocialAuthProvider) => 
       api.post<AuthResponse>('/auth/signin', credentials),
     onSuccess: (data) => {
       // Store auth token

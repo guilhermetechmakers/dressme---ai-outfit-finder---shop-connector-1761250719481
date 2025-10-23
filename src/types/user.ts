@@ -4,6 +4,7 @@ export interface User {
   fullName: string;
   avatarUrl?: string;
   isEmailVerified: boolean;
+  onboardingCompleted: boolean;
   preferences: UserPreferences;
   subscription: UserSubscription;
   createdAt: string;

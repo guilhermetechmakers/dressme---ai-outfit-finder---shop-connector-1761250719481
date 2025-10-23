@@ -1,6 +1,7 @@
 export interface SignInInput {
   email: string;
   password: string;
+  rememberMe?: boolean;
 }
 
 export interface SignUpInput {
@@ -8,12 +9,15 @@ export interface SignUpInput {
   password: string;
   fullName: string;
   confirmPassword: string;
+  acceptTerms: boolean;
+  marketingOptIn?: boolean;
 }
 
 export interface AuthResponse {
   user: User;
   token: string;
   refreshToken: string;
+  requiresOnboarding?: boolean;
 }
 
 export interface PasswordResetRequest {
@@ -33,6 +37,7 @@ export interface EmailVerification {
 export interface SocialAuthProvider {
   provider: 'google' | 'apple' | 'facebook';
   token: string;
+  idToken?: string;
 }
 
 export interface AuthState {
@@ -40,4 +45,41 @@ export interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  requiresOnboarding: boolean;
+}
+
+export interface OnboardingData {
+  preferredStores: string[];
+  stylePreferences: string[];
+  budgetRange: {
+    min: number;
+    max: number;
+  };
+  sizeProfile: {
+    gender: 'male' | 'female' | 'unisex';
+    sizes: {
+      tops?: string;
+      bottoms?: string;
+      shoes?: string;
+    };
+  };
+  notifications: {
+    email: boolean;
+    push: boolean;
+    marketing: boolean;
+  };
+}
+
+export interface OnboardingStep {
+  id: string;
+  title: string;
+  description: string;
+  component: React.ComponentType<any>;
+  isComplete: boolean;
+}
+
+export interface AuthError {
+  field?: string;
+  message: string;
+  code: string;
 }
